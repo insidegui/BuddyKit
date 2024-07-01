@@ -5,12 +5,14 @@ import SwiftUI
 public struct FormSheet<Content: View>: View {
     public var cancellationTitle: LocalizedStringKey
     public var confirmationTitle: LocalizedStringKey
+    public var dismissOnConfirm: Bool
     public var onConfirm: (() -> Void)
     @ViewBuilder public var content: () -> Content
 
-    public init(cancellationTitle: LocalizedStringKey = "Cancel", confirmationTitle: LocalizedStringKey = "Done", onConfirm: @escaping () -> Void, @ViewBuilder content: @escaping () -> Content) {
+    public init(cancellationTitle: LocalizedStringKey = "Cancel", confirmationTitle: LocalizedStringKey = "Done", dismissOnConfirm: Bool = false, onConfirm: @escaping () -> Void, @ViewBuilder content: @escaping () -> Content) {
         self.cancellationTitle = cancellationTitle
         self.confirmationTitle = confirmationTitle
+        self.dismissOnConfirm = dismissOnConfirm
         self.onConfirm = onConfirm
         self.content = content
     }
@@ -24,7 +26,7 @@ public struct FormSheet<Content: View>: View {
 
     private func confirm() {
         onConfirm()
-        dismiss()
+        if dismissOnConfirm { dismiss() }
     }
 
     public var body: some View {
