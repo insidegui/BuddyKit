@@ -1,7 +1,7 @@
 import SwiftData
 import Foundation
 
-@available(macOS 14.0, iOS 17.0, *)
+@available(macOS 14, iOS 17, tvOS 17, watchOS 10, *)
 public extension ModelContainer {
 
     /// Creates a copy of the on-disk representation that can be opened with a database app.

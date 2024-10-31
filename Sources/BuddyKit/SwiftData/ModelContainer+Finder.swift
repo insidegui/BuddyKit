@@ -1,4 +1,4 @@
-#if canImport(SwiftData) && canImport(AppKit)
+#if os(macOS)
 import Foundation
 import SwiftData
 import AppKit
@@ -33,4 +33,4 @@ public extension ModelContainer {
         }
     }
 }
-#endif // canImport(SwiftData) && canImport(AppKit)
+#endif // os(macOS)

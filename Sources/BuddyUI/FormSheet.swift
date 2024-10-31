@@ -1,3 +1,5 @@
+#if !os(watchOS)
+
 import SwiftUI
 
 /// Wraps a view in such a way that it can be used as a form sheet with cancellation and confirmation buttons.
@@ -56,7 +58,9 @@ public struct FormSheet<Content: View>: View {
         /// Apply modifiers for iOS and friends.
         NavigationView {
             content()
+                #if !os(tvOS)
                 .navigationBarTitleDisplayMode(.inline)
+                #endif // os(tvOS)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
                         Button(cancellationTitle, action: cancel)
@@ -158,3 +162,5 @@ private struct FormSheetPreview: View {
     FormContentPreview()
 }
 #endif
+
+#endif // !os(watchOS)

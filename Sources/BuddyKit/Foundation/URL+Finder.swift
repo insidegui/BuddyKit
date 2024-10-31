@@ -1,4 +1,4 @@
-#if canImport(AppKit)
+#if os(macOS)
 import Foundation
 import AppKit
 
@@ -9,4 +9,4 @@ public extension URL {
         NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: deletingLastPathComponent().path)
     }
 }
-#endif
+#endif // os(macOS)

@@ -5,7 +5,7 @@ public extension View {
     /// On previous OSes, applies a padding unless padding is set to zero.
     @ViewBuilder
     func groupedFormStyle(_ enabled: Bool = true, legacyPadding: CGFloat? = nil) -> some View {
-        if #available(macOS 13.0, iOS 16.0, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             formStyle(.grouped)
         } else {
             if let legacyPadding {

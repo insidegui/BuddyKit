@@ -1,4 +1,4 @@
-#if canImport(AppKit)
+#if os(macOS)
 import AppKit
 
 public extension NSPasteboard {
@@ -11,4 +11,4 @@ public extension NSPasteboard {
         }
     }
 }
-#endif
+#endif // os(macOS)

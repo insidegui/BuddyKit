@@ -8,12 +8,14 @@ let package = Package(
     platforms: [.iOS(.v15), .macOS(.v12)],
     products: [
         .library(name: "BuddyFoundation", targets: ["BuddyFoundation"]),
+        .library(name: "BuddyPlatform", targets: ["BuddyPlatform"]),
         .library(name: "BuddyUI", targets: ["BuddyUI"]),
         .library(name: "BuddyKit", targets: ["BuddyKit"]),
     ],
     targets: [
         .target(name: "BuddyFoundation"),
-        .target(name: "BuddyUI", dependencies: [.target(name: "BuddyFoundation")]),
+        .target(name: "BuddyPlatform", dependencies: [.target(name: "BuddyFoundation")]),
+        .target(name: "BuddyUI", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
         .target(name: "BuddyKit", dependencies: [
             .target(name: "BuddyFoundation"),
             .target(name: "BuddyUI"),
