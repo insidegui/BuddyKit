@@ -8,7 +8,7 @@ internal import BuddyFoundation
 /// You can set the value of one of your view's `@State` properties to an empty `AlertContent` value, then set the property
 /// to an `AlertContent` initialized with ``AlertContent/init(_:title:)`` in a `catch` block to automatically present
 /// an error to the user when it occurs.
-public struct AlertContent: Equatable {
+public struct AlertContent: Equatable, Sendable {
     public var isPresented: Bool
     public var title: Text
     public var message: Text?
