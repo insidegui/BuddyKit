@@ -9,12 +9,14 @@ let package = Package(
     products: [
         .library(name: "BuddyFoundation", targets: ["BuddyFoundation"]),
         .library(name: "BuddyPlatform", targets: ["BuddyPlatform"]),
+        .library(name: "BuddyImageKit", targets: ["BuddyImageKit"]),
         .library(name: "BuddyUI", targets: ["BuddyUI"]),
         .library(name: "BuddyKit", targets: ["BuddyKit"]),
     ],
     targets: [
         .target(name: "BuddyFoundation"),
         .target(name: "BuddyPlatform", dependencies: [.target(name: "BuddyFoundation")]),
+        .target(name: "BuddyImageKit", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
         .target(name: "BuddyUI", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
         .target(name: "BuddyKit", dependencies: [
             .target(name: "BuddyFoundation"),
