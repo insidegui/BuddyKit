@@ -1,6 +1,24 @@
 import Foundation
 
-public typealias ImageMetadataDictionary = [String: AnyHashable]
+/// Represents metadata that can be encoded into an image.
+/// Currently supports a small subset of the IPTC namespace.
+public struct ImageMetadata: Hashable {
+    public struct IPTC: Hashable {
+        public var credit: String?
+        public var digitalSourceType: String?
+
+        public init(credit: String? = nil, digitalSourceType: String? = nil) {
+            self.credit = credit
+            self.digitalSourceType = digitalSourceType
+        }
+    }
+
+    public var iptc: IPTC?
+
+    public init(iptc: IPTC? = nil) {
+        self.iptc = iptc
+    }
+}
 
 /// Configures the encoding of a native image type into a common image file format such as HEIC or PNG.
 /// There are static conveniences for ``default``, ``thumbnail``, as well as for starting a declaration
@@ -10,11 +28,9 @@ public struct PlatformImageEncodingOptions {
     public var maxSize: Double? = nil
     public var preserveColorSpace: Bool = true
     public var preserveGainMap: Bool = true
-    public var metadata: ImageMetadataDictionary = [:]
+    public var metadata: ImageMetadata? = nil
 
-    public init(lossyCompressionQuality: Float = 1.0, maxSize: Double? = nil, preserveColorSpace: Bool = true, preserveGainMap: Bool = true, metadata: ImageMetadataDictionary = [:]) {
-        assert(metadata.isEmpty, "Image metadata support not implemented yet")
-
+    public init(lossyCompressionQuality: Float = 1.0, maxSize: Double? = nil, preserveColorSpace: Bool = true, preserveGainMap: Bool = true, metadata: ImageMetadata? = nil) {
         self.lossyCompressionQuality = lossyCompressionQuality
         self.maxSize = maxSize
         self.preserveColorSpace = preserveColorSpace
@@ -52,22 +68,12 @@ public extension PlatformImageEncodingOptions {
             .preserveColorSpace(preserve)
     }
 
-    /// Appends a metadata key,value pair to the encoded image.
-    /// - Parameters:
-    ///   - key: The metadata key.
-    ///   - value: The value for the metadata key.
-    /// - Returns: The encoding options with the new metadata added.
-    static func metadata(_ key: String, _ value: AnyHashable) -> PlatformImageEncodingOptions {
+    /// Sets the metadata for the encoded image.
+    /// - Parameter metadata: The metadata.
+    /// - Returns: The encoding options with the metadata replaced by the one.
+    static func metadata(_ metadata: ImageMetadata) -> PlatformImageEncodingOptions {
         PlatformImageEncodingOptions.default
-            .metadata(key, value)
-    }
-
-    /// Sets the metadata dictionary for the encoded image.
-    /// - Parameter metadata: The metadata dictionary.
-    /// - Returns: The encoding options with the metadata replaced by the new dictionary.
-    static func metadata(_ metadata: ImageMetadataDictionary) -> PlatformImageEncodingOptions {
-        PlatformImageEncodingOptions.default
-            .setMetadata(metadata)
+            .metadata(metadata)
     }
 
     /// Determines the maximum dimension size of the encoded image.
@@ -127,40 +133,12 @@ public extension PlatformImageEncodingOptions {
         return mSelf
     }
 
-    /// Appends a metadata key,value pair to the encoding options metadata dictionary.
-    /// - Parameters:
-    ///   - key: The metadata key.
-    ///   - value: The value for the metadata key.
-    /// - Returns: The encoding options with the new metadata added.
+    /// Sets the metadata for the encoded image.
+    /// - Parameter metadata: The image metadata.
+    /// - Returns: The encoding options with the metadata replaced by the new one.
     ///
-    /// This function will set the specified key,value pair in the metadata dictionary.
-    /// If the dictionary already has a value for the specified key, the value will be replaced.
-    func metadata(_ key: String, _ value: AnyHashable) -> Self {
-        var mSelf = self
-        mSelf.metadata[key] = value
-        return mSelf
-    }
-
-    /// Merges a new metadata dictionary into the encoding options metadata dictionary.
-    /// - Parameter metadata: The dictionary to be merged with the existing metadata dictionary.
-    /// - Returns: The encoding options with the new metadata.
-    ///
-    /// This function will merge the new metadata dictionary into the existing encoding options metadata dictionary.
-    /// If a key in the existing metadata dictionary already has a value, the value will be replaced by the value for the corresponding key in the new dictionary.
-    ///
-    /// - note: To completely replace the metadata dictionary, use ``setMetadata(_:)``.
-    func metadata(_ metadata: ImageMetadataDictionary) -> Self {
-        var mSelf = self
-        mSelf.metadata.merge(metadata, uniquingKeysWith: { _, new in new })
-        return mSelf
-    }
-
-    /// Sets the metadata dictionary for the encoded image.
-    /// - Parameter metadata: The metadata dictionary.
-    /// - Returns: The encoding options with the metadata replaced by the new dictionary.
-    ///
-    /// This function will replace any existing metadata in the encoding options with the new dictionary.
-    func setMetadata(_ metadata: ImageMetadataDictionary) -> Self {
+    /// This function will replace any existing metadata in the encoding options with the new one.
+    func metadata(_ metadata: ImageMetadata) -> Self {
         var mSelf = self
         mSelf.metadata = metadata
         return mSelf

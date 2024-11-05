@@ -13,8 +13,6 @@ internal extension PlatformImageEncodingOptions {
     static let lossyTypes: Set<UTType> = [.heic, .jpeg]
 
     func optionsDictionary(forEncoding image: CGImage, type: UTType) -> CFDictionary {
-        assert(metadata.isEmpty, "Image metadata support not implemented yet")
-        
         assert(Self.supportedTypes.contains(type), "Unsupported image type \"\(type.identifier)\".")
 
         var dict: [CFString: Any] = [:]
@@ -41,6 +39,10 @@ internal extension PlatformImageEncodingOptions {
                     kCGImagePropertyHEICSCanvasPixelHeight: image.height
                 ]
             }
+        }
+
+        if let metadata {
+            metadata.apply(to: &dict)
         }
 
         return dict as CFDictionary
