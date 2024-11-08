@@ -15,7 +15,7 @@ public extension CGImage {
 
         let optionsDict: CFDictionary = options.optionsDictionary(forEncoding: self, type: type)
 
-        logger.debug("Options for encoding \(type.identifier, privacy: .public): \(String(describing: optionsDict))")
+//        logger.debug("Options for encoding \(type.identifier, privacy: .public): \(String(describing: optionsDict))")
 
         CGImageDestinationAddImage(destination, self, optionsDict)
         CGImageDestinationFinalize(destination)
@@ -51,7 +51,7 @@ public extension CGImage {
 
         let optionsDict: CFDictionary = options.optionsDictionary(forEncoding: self, type: type)
 
-        logger.debug("Options for encoding \(type.identifier, privacy: .public): \(String(describing: optionsDict))")
+//        logger.debug("Options for encoding \(type.identifier, privacy: .public): \(String(describing: optionsDict))")
 
         CGImageDestinationAddImage(destination, self, optionsDict)
         try CGImageDestinationFinalize(destination)
