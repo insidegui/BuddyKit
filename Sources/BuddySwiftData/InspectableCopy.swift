@@ -1,5 +1,6 @@
 import SwiftData
 import Foundation
+internal import BuddyFoundation
 
 @available(macOS 14, iOS 17, tvOS 17, watchOS 10, *)
 public extension ModelContainer {

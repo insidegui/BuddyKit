@@ -3,7 +3,7 @@ import Foundation
 import SwiftData
 import AppKit
 
-@available(macOS 14.0, iOS 17.0, *)
+@available(macOS 14, *)
 @MainActor
 public extension ModelContainer {
     /// Opens an inspectable copy of the database with the default app for `.db` files.
@@ -19,7 +19,7 @@ public extension ModelContainer {
             NSAlert(error: error).runModal()
         }
     }
-    
+
     /// Reveals the database file in Finder.
     func revealDatabaseInFinder() {
         do {
@@ -31,6 +31,14 @@ public extension ModelContainer {
         } catch {
             NSAlert(error: error).runModal()
         }
+    }
+}
+
+private extension URL {
+    /// This extension exists in BuddyAppKit, but I wanted to keep this module dependant on BuddyFoundation only,
+    /// and didn't want to include AppKit code in BuddyFoundation, so here we are...
+    func revealInFinder() {
+        NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: deletingLastPathComponent().path)
     }
 }
 #endif // os(macOS)

@@ -10,6 +10,7 @@ let package = Package(
         .library(name: "BuddyFoundation", targets: ["BuddyFoundation"]),
         .library(name: "BuddyPlatform", targets: ["BuddyPlatform"]),
         .library(name: "BuddyImageKit", targets: ["BuddyImageKit"]),
+        .library(name: "BuddySwiftData", targets: ["BuddySwiftData"]),
         .library(name: "BuddyUI", targets: ["BuddyUI"]),
         .library(name: "BuddyKit", targets: ["BuddyKit"]),
     ],
@@ -17,6 +18,7 @@ let package = Package(
         .target(name: "BuddyFoundation"),
         .target(name: "BuddyPlatform", dependencies: [.target(name: "BuddyFoundation")]),
         .target(name: "BuddyImageKit", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
+        .target(name: "BuddySwiftData", dependencies: [.target(name: "BuddyFoundation")]),
         .target(name: "BuddyUI", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
         .target(name: "BuddyKit", dependencies: [
             .target(name: "BuddyFoundation"),
