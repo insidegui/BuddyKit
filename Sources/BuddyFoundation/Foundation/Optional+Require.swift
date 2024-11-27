@@ -3,7 +3,7 @@ public extension Optional {
     /// - Parameter error: The error to throw in case the optional is `nil`.
     /// - Returns: The unwrapped value.
     @discardableResult
-    func require(_ error: Error) throws -> Wrapped {
+    func require<E: Error>(_ error: E) throws(E) -> Wrapped {
         guard let self else { throw error }
         return self
     }

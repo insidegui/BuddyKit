@@ -101,7 +101,7 @@ public extension View {
 }
 
 private struct FormSheetConfirmationButtonEnabledEnvironmentKey: EnvironmentKey {
-    static var defaultValue = true
+    nonisolated(unsafe) static var defaultValue = true
 }
 private extension EnvironmentValues {
     var formSheetConfirmationButtonEnabled: Bool {
@@ -111,7 +111,7 @@ private extension EnvironmentValues {
 }
 
 private struct FormSheetCancellationButtonEnabledEnvironmentKey: EnvironmentKey {
-    static var defaultValue = true
+    nonisolated(unsafe) static var defaultValue = true
 }
 private extension EnvironmentValues {
     var formSheetCancellationButtonEnabled: Bool {

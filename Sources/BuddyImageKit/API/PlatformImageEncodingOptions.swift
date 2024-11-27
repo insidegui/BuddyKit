@@ -46,9 +46,9 @@ extension PlatformImageEncodingOptions: Hashable { }
 public extension PlatformImageEncodingOptions {
     static let defaultSharingThumbnailSize: Double = 320
 
-    static let `default` = PlatformImageEncodingOptions()
-    static let thumbnail = PlatformImageEncodingOptions(lossyCompressionQuality: 0.8, maxSize: 800)
-    static let sharingThumbnail = PlatformImageEncodingOptions(lossyCompressionQuality: 0.9, maxSize: PlatformImageEncodingOptions.defaultSharingThumbnailSize)
+    nonisolated(unsafe) static let `default` = PlatformImageEncodingOptions()
+    nonisolated(unsafe) static let thumbnail = PlatformImageEncodingOptions(lossyCompressionQuality: 0.8, maxSize: 800)
+    nonisolated(unsafe) static let sharingThumbnail = PlatformImageEncodingOptions(lossyCompressionQuality: 0.9, maxSize: PlatformImageEncodingOptions.defaultSharingThumbnailSize)
 
     /// This makes it possible to declare options by starting with `.maxSize(...)` and following up with `.quality(...)`, etc.
     static func maxSize(_ maxSize: Double) -> PlatformImageEncodingOptions {
