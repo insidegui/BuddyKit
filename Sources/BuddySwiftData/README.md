@@ -1,0 +1,3 @@
+# BuddySwiftData
+
+Extensions for SwiftData.
