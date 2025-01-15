@@ -14,7 +14,7 @@ public extension View {
     ///
     /// - note: You may add more than one button to the safe area by providing an `HStack` or `VStack` with multiple buttons in the view builder.
     /// For example, if you'd like to have "Cancel" and "Save" buttons on macOS, you might want to place them within an `HStack` with a `Spacer` in between,
-    /// so that the "Cancel" button is all the way to the right, and the "Save" button is all the way to the left.
+    /// so that the "Cancel" button is all the way to the left, and the "Save" button is all the way to the right.
     func safeAreaButton<ButtonContent: View>(spacing: CGFloat = 16, @ViewBuilder _ button: @escaping () -> ButtonContent) -> some View {
         modifier(SafeAreaButton(spacing: spacing, button: button))
     }
