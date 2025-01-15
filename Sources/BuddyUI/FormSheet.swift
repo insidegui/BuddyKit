@@ -150,6 +150,7 @@ private struct FormSheetPreview: View {
         .frame(minWidth: 200, maxWidth: .infinity, minHeight: 200, maxHeight: .infinity)
         .sheet(isPresented: $sheetPresented, onDismiss: { print("onDismiss") }) {
             FormContentPreview()
+                .resizableSheet(minWidth: 200, minHeight: 200)
         }
     }
 }
