@@ -1,7 +1,7 @@
 #if os(visionOS)
 import UIKit
 
-/// A shim for `UIScreen` on visionOS so that UIKit code that accesses `UIScreen` (via ``PlatformScreen``) can still be build.
+/// A shim for `UIScreen` on visionOS so that UIKit code that accesses `UIScreen` (via ``PlatformScreen``) can still be built.
 /// - warning: Even though your visionOS code will build when using ``PlatformScreen`` on visionOS, you should move away from acessing the screen directly as that's not supported on the platform.
 @MainActor
 @objcMembers
