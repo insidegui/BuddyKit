@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if !os(watchOS)
 public extension View {
     /// Makes the view resizable when presented as a sheet.
     /// 
@@ -7,7 +8,7 @@ public extension View {
     /// is specified after the frame. This is a backport so that previous OS versions can be supported whilst adopting the new API.
     @ViewBuilder
     func resizableSheet(minWidth: CGFloat? = nil, maxWidth: CGFloat = .infinity, minHeight: CGFloat? = nil, maxHeight: CGFloat = .infinity) -> some View {
-        if #available(macOS 15.0, *) {
+        if #available(macOS 15.0, iOS 18.0, tvOS 18.0, visionOS 2.0, *) {
             self
                 .frame(minWidth: minWidth, maxWidth: maxWidth, minHeight: minHeight, maxHeight: maxHeight)
                 .presentationSizing(.fitted)
@@ -16,3 +17,4 @@ public extension View {
         }
     }
 }
+#endif

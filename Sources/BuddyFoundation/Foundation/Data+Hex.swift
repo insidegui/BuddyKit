@@ -20,7 +20,7 @@ public extension Data {
 
 // MARK: - Hex Decoding
 
-@available(macOS 13.0, *)
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 extension Data: @retroactive ExpressibleByStringLiteral {
     
     /// Create data from a hex string literal such as `AABBCC1234`.

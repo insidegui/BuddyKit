@@ -1,4 +1,4 @@
-#if canImport(QuartzCore)
+#if !os(watchOS)
 
 #if os(macOS)
 import AppKit
@@ -73,6 +73,6 @@ import UIKit
     /// - note: Check out ``PlatformWindowScene`` for details on how this behaves in AppKit.
     open var hostingWindowScene: PlatformWindowScene? { window?.windowScene }
 }
-#endif // canImport(AppKit) && !targetEnvironment(macCatalyst)
+#endif // os(macOS)
 
-#endif // canImport(QuartzCore)
+#endif // !os(watchOS)

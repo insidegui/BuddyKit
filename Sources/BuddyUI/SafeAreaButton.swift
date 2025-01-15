@@ -1,3 +1,5 @@
+#if !os(watchOS)
+
 import SwiftUI
 
 public extension View {
@@ -78,7 +80,7 @@ private extension ButtonStyle where Self == SafeAreaButtonStyle {
 }
 
 #if DEBUG
-@available(macOS 13, iOS 16, tvOS 16, *)
+@available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
 #Preview {
     Form {
         TextField("Field", text: .constant("Hello"))
@@ -93,7 +95,11 @@ private extension ButtonStyle where Self == SafeAreaButtonStyle {
         } label: {
             Text("Generate")
         }
+        #if os(macOS) || os(iOS)
         .keyboardShortcut(.defaultAction)
+        #endif
     }
 }
 #endif
+
+#endif // !os(watchOS)
