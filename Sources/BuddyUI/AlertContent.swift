@@ -18,7 +18,7 @@ public struct AlertContent: Equatable, Sendable {
         self.isPresented = isPresented
         self.title = Text(title)
         self.message = message.flatMap { Text($0) }
-        self.buttonTitle = Text(title)
+        self.buttonTitle = Text(buttonTitle)
     }
 
     @_disfavoredOverload
