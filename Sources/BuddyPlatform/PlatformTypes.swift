@@ -61,7 +61,7 @@ public typealias PlatformImage = NSImage
 public typealias PlatformColor = NSColor
 
 /// `UIView/NSView` alias for platform-agnostic code.
-open class PlatformView: NSView { }
+public typealias PlatformView = NSView
 
 /// `UIViewController/NSViewController` alias for platform-agnostic code.
 public typealias PlatformViewController = NSViewController

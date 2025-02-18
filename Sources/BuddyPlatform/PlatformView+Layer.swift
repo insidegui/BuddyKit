@@ -1,5 +1,4 @@
 #if !os(watchOS)
-import SwiftUI
 
 #if os(macOS)
 import AppKit
@@ -32,13 +31,9 @@ import AppKit
     /// - note: Check out ``PlatformWindowScene`` for details on how this behaves in AppKit.
     open var hostingWindowScene: PlatformWindowScene? { window?.screen }
 
-    open override func layout() {
-        layoutSubviews()
-    }
-
     /// This offers a place to override `layoutSubviews` for both UIKit and AppKit, since the method name on `NSView` is just `layout`.
     open func layoutSubviews() {
-        super.layout()
+        layout()
     }
 
     /// This offers a place to override `didMoveToSuperview` for both UIKit and AppKit, since the method name on `NSView` is different.
@@ -81,48 +76,3 @@ import UIKit
 #endif // os(macOS)
 
 #endif // !os(watchOS)
-
-#if DEBUG
-private final class TestView: PlatformView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        let testLayer: CALayer
-
-        if let layer = platformLayer.sublayers?.first {
-            testLayer = layer
-        } else {
-            testLayer = CALayer()
-            testLayer.backgroundColor = PlatformColor.systemGreen.cgColor
-            platformLayer.addSublayer(testLayer)
-        }
-
-
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        CATransaction.setAnimationDuration(0)
-
-        testLayer.bounds = CGRect(
-            x: 0,
-            y: 0,
-            width: platformLayer.bounds.width * 0.5,
-            height: platformLayer.bounds.height * 0.5
-        )
-        testLayer.position = CGPoint(
-            x: platformLayer.frame.midX,
-            y: platformLayer.frame.midY
-        )
-
-        platformLayer.backgroundColor = PlatformColor.systemBlue.cgColor
-
-        CATransaction.commit()
-
-        print(#function, bounds, "testLayer:", testLayer.bounds)
-    }
-}
-
-@available(macOS 15.0, iOS 18.0, *)
-#Preview {
-    TestView(frame: .init(x: 0, y: 0, width: 200, height: 200))
-}
-#endif
