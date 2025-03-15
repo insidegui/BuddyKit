@@ -16,12 +16,12 @@ import AppKit
         }
 
         if layer == nil {
-            layer = CALayer()
+            layer = makeBackingLayer()
         }
 
         guard let layer else {
             assertionFailure("Unexpected: NSView layer is nil right after creating the layer")
-            return CALayer() // fallback in the extremely unlikely event that the above assertion fails in production
+            return makeBackingLayer() // fallback in the extremely unlikely event that the above assertion fails in production
         }
 
         return layer
