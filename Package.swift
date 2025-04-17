@@ -20,9 +20,11 @@ let package = Package(
         .target(name: "BuddyImageKit", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
         .target(name: "BuddySwiftData", dependencies: [.target(name: "BuddyFoundation")]),
         .target(name: "BuddyUI", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
+        .target(name: "BuddyKitObjC"),
         .target(name: "BuddyKit", dependencies: [
             .target(name: "BuddyFoundation"),
             .target(name: "BuddyUI"),
+            .target(name: "BuddyKitObjC"),
         ]),
     ]
 )
