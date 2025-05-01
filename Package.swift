@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "BuddyKit",
-    platforms: [.iOS(.v15), .macOS(.v12)],
+    platforms: [.iOS(.v15), .macOS(.v12), .watchOS(.v8), .tvOS(.v15), .visionOS(.v1)],
     products: [
         .library(name: "BuddyFoundation", targets: ["BuddyFoundation"]),
         .library(name: "BuddyPlatform", targets: ["BuddyPlatform"]),
