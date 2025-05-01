@@ -2,7 +2,7 @@ import Foundation
 
 /// A platform-agnostic pasteboard for simple operations such as copying a string to the pasteboard.
 /// Wraps `NSPasteboard` on macOS and `UIPasteboard` on iOS and variants.
-@available(iOS 15.0, macOS 12.0, *)
+@available(iOS 15.0, macOS 12.0, visionOS 1.0, *)
 @available(watchOS, unavailable, message: "There's no pasteboard on watchOS.")
 @available(tvOS, unavailable, message: "There's no pasteboard on tvOS.")
 public final class Pasteboard: Sendable {
@@ -16,7 +16,7 @@ public final class Pasteboard: Sendable {
     }
 }
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS) && !os(tvOS)
 
 import UIKit
 
@@ -45,6 +45,9 @@ private extension Pasteboard {
 
 #else
 
+@available(iOS 15.0, macOS 12.0, visionOS 1.0, *)
+@available(watchOS, unavailable)
+@available(tvOS, unavailable)
 private extension Pasteboard {
     var _string: String? {
         get { nil }
