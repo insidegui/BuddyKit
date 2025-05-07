@@ -1,5 +1,4 @@
 // swift-tools-version: 6.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
@@ -7,6 +6,7 @@ let package = Package(
     name: "BuddyKit",
     platforms: [.iOS(.v15), .macOS(.v12), .watchOS(.v8), .tvOS(.v15), .visionOS(.v1)],
     products: [
+        .library(name: "BuddyPathKit", targets: ["BuddyPathKit"]),
         .library(name: "BuddyFoundation", targets: ["BuddyFoundation"]),
         .library(name: "BuddyPlatform", targets: ["BuddyPlatform"]),
         .library(name: "BuddyImageKit", targets: ["BuddyImageKit"]),
@@ -15,7 +15,8 @@ let package = Package(
         .library(name: "BuddyKit", targets: ["BuddyKit"]),
     ],
     targets: [
-        .target(name: "BuddyFoundation"),
+        .target(name: "BuddyPathKit"),
+        .target(name: "BuddyFoundation", dependencies: [.target(name: "BuddyPathKit")]),
         .target(name: "BuddyPlatform", dependencies: [.target(name: "BuddyFoundation")]),
         .target(name: "BuddyImageKit", dependencies: [.target(name: "BuddyFoundation"), .target(name: "BuddyPlatform")]),
         .target(name: "BuddySwiftData", dependencies: [.target(name: "BuddyFoundation")]),
@@ -26,5 +27,6 @@ let package = Package(
             .target(name: "BuddyUI"),
             .target(name: "BuddyKitObjC"),
         ]),
+        .testTarget(name: "BuddyPathKitTests", dependencies: [.target(name: "BuddyPathKit")], path: "Tests"),
     ]
 )
