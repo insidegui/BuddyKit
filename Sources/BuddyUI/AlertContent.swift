@@ -30,6 +30,14 @@ public struct AlertContent: Equatable, Sendable {
         self.message = message.flatMap { Text($0) }
         self.buttonTitle = Text(buttonTitle)
     }
+
+    @_disfavoredOverload
+    public init(isPresented: Bool = false, title: String, message: String? = nil, buttonTitle: LocalizedStringKey = "OK") {
+        self.isPresented = isPresented
+        self.title = Text(title)
+        self.message = message.flatMap { Text($0) }
+        self.buttonTitle = Text(buttonTitle)
+    }
 }
 
 public extension AlertContent {
@@ -60,13 +68,38 @@ public extension AlertContent {
     /// }
     /// ```
     init(_ error: Error, title: LocalizedStringKey = "Error") {
+        if let localized = error as? LocalizedError {
+            if let errorTitle = localized.errorDescription {
+                self.init(
+                    isPresented: true,
+                    title: errorTitle,
+                    message: localized.failureReason
+                )
+            } else {
+                self.init(
+                    isPresented: true,
+                    title: title,
+                    message: localized.failureReason
+                )
+            }
+        } else {
+            self.init(
+                isPresented: true,
+                title: title,
+                message: error.localizedDescription
+            )
+        }
+    }
+
+    @_disfavoredOverload
+    init(_ error: Error, title: String) {
         self.init(
             isPresented: true,
             title: title,
             message: error.localizedDescription
         )
     }
-    
+
     /// Initializes an empty alert content.
     ///
     /// Use this initializer as the initial value for an `@State` property in a view where you'd like to present alerts in the future.

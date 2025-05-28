@@ -92,7 +92,7 @@ public struct AsyncButton<Label: View>: View {
             } catch {
                 guard !error.isCancellation else { return }
 
-                let content = AlertContent(isPresented: true, title: "Error", message: error.localizedDescription)
+                let content = AlertContent(error)
                 if useExternalAlert {
                     alert = content
                 } else {
