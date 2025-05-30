@@ -25,6 +25,10 @@
     os_log_t log = os_log_create("codes.rambo.BuddyKit", "PreviewBugFix");
 
     NSString *bundleID = NSBundle.mainBundle.bundleIdentifier;
+
+    /// This can occur in command-line tools, for example.
+    if (!bundleID) return;
+
     NSString *notificationName = [NSString stringWithFormat:@"codes.rambo.PreviewBugFixPleaseTerminate-%@", bundleID];
 
     if ([NSProcessInfo.processInfo.environment[@"XCODE_RUNNING_FOR_PREVIEWS"] isEqualToString:@"1"]) {
