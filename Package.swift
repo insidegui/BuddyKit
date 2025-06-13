@@ -27,6 +27,7 @@ let package = Package(
             .target(name: "BuddyUI"),
             .target(name: "BuddyKitObjC"),
         ]),
-        .testTarget(name: "BuddyPathKitTests", dependencies: [.target(name: "BuddyPathKit")], path: "Tests"),
+        .testTarget(name: "BuddyPathKitTests", dependencies: [.target(name: "BuddyPathKit")]),
+        .testTarget(name: "BuddyFoundationTests", dependencies: [.target(name: "BuddyFoundation")]),
     ]
 )
