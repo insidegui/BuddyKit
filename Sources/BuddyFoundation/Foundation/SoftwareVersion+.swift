@@ -27,9 +27,9 @@ public extension Bundle {
 public extension SoftwareVersion {
     /// The current operating system version.
     static let currentOS = SoftwareVersion(
-        major: ProcessInfo.processInfo.osSoftwareVersion.major,
-        minor: ProcessInfo.processInfo.osSoftwareVersion.minor,
-        patch: ProcessInfo.processInfo.osSoftwareVersion.patch
+        major: ProcessInfo.processInfo.operatingSystemVersion.majorVersion,
+        minor: ProcessInfo.processInfo.operatingSystemVersion.minorVersion,
+        patch: ProcessInfo.processInfo.operatingSystemVersion.patchVersion
     )
 
     /// The current app version.
