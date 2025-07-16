@@ -1,7 +1,7 @@
 import Foundation
 import BuddyPathKit
 
-extension FilePath: @retroactive Codable {
+extension FilePath: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         try self.init(container.decode(String.self))
