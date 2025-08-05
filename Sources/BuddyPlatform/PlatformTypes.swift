@@ -20,7 +20,7 @@ public typealias PlatformColor = UIColor
     public typealias PlatformViewController = UIViewController
 
     /// `UIViewControllerRepresentable/NSViewControllerRepresentable` alias for platform-agnostic code.
-    public typealias PlatformViewControllerRepresentable = UIViewControllerRepresentable
+    public typealias PlatformViewControllerRepresentableType = UIViewControllerRepresentable
 
     /// `UIViewRepresentable/NSViewRepresentable` alias for platform-agnostic code.
     public typealias PlatformViewRepresentableType = UIViewRepresentable
@@ -67,7 +67,7 @@ public typealias PlatformView = NSView
 public typealias PlatformViewController = NSViewController
 
 /// `UIViewControllerRepresentable/NSViewControllerRepresentable` alias for platform-agnostic code.
-public typealias PlatformViewControllerRepresentable = NSViewControllerRepresentable
+public typealias PlatformViewControllerRepresentableType = NSViewControllerRepresentable
 
 /// `UIViewRepresentable/NSViewRepresentable` alias for platform-agnostic code.
 /// - note: You may adopt the ``PlatformViewRepresentable`` protocol in order to use a single implementation for both UIKit and AppKit platforms.
