@@ -1,3 +1,5 @@
+#if !os(watchOS)
+
 import SwiftUI
 
 /// Generic wrapper for a platform view controller to be embedded in a SwiftUI view hierarchy.
@@ -82,5 +84,7 @@ final class _WrappedViewControllerTest: PlatformViewController {
         controller.fillColor = context.environment.colorScheme == .dark ? PlatformColor.systemPink.cgColor : PlatformColor.systemOrange.cgColor
     }
 }
+
+#endif
 
 #endif
