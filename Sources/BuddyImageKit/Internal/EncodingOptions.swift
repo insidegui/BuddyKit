@@ -45,6 +45,12 @@ internal extension PlatformImageEncodingOptions {
             metadata.apply(to: &dict)
         }
 
+        if let customOptions {
+            for (key, value) in customOptions {
+                dict[key as CFString] = value
+            }
+        }
+
         return dict as CFDictionary
     }
 }

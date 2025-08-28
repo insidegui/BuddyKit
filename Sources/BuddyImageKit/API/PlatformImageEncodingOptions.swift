@@ -30,12 +30,18 @@ public struct PlatformImageEncodingOptions {
     public var preserveGainMap: Bool = true
     public var metadata: ImageMetadata? = nil
 
-    public init(lossyCompressionQuality: Float = 1.0, maxSize: Double? = nil, preserveColorSpace: Bool = true, preserveGainMap: Bool = true, metadata: ImageMetadata? = nil) {
+    /// Additional options provided directly to `CGImageDestinationAddImage`.
+    ///
+    /// Options specified in this dictionary override any options that are already represented in ``PlatformImageEncodingOptions``.
+    public var customOptions: [String: AnyHashable]? = nil
+
+    public init(lossyCompressionQuality: Float = 1.0, maxSize: Double? = nil, preserveColorSpace: Bool = true, preserveGainMap: Bool = true, metadata: ImageMetadata? = nil, customOptions: [String: AnyHashable]? = nil) {
         self.lossyCompressionQuality = lossyCompressionQuality
         self.maxSize = maxSize
         self.preserveColorSpace = preserveColorSpace
         self.preserveGainMap = preserveGainMap
         self.metadata = metadata
+        self.customOptions = customOptions
     }
 }
 
