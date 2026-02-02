@@ -93,24 +93,11 @@ extension URL {
         let destinationStream: ArchiveByteStream
 
         if let encryptionKey {
-            let context = ArchiveEncryptionContext(
-                profile: .hkdf_sha256_aesctr_hmac__symmetric__none,
-                compressionAlgorithm: algorithm
-            )
-
-            do {
-                try context.setSymmetricKey(encryptionKey)
-            } catch {
-                throw URLArchiveError.encryptionKey(error)
-            }
-
-            let encryptionStream = try ArchiveByteStream.encryptionStream(
+            destinationStream = try Self.archiveEncryptionStream(
                 writingTo: writeFileStream,
-                encryptionContext: context
+                encryptionKey: encryptionKey,
+                algorithm: algorithm
             )
-            .require(URLArchiveError.encryptionStreamInit)
-
-            destinationStream = encryptionStream
         } else {
             let compressStream = try ArchiveByteStream.compressionStream(
                 using: algorithm,
@@ -159,24 +146,10 @@ extension URL {
         let destinationStream: ArchiveByteStream
 
         if let encryptionKey {
-            let context = try ArchiveEncryptionContext(
-                from: readFileStream
-            )
-            .require(URLArchiveError.encryptionStreamInit)
-
-            do {
-                try context.setSymmetricKey(encryptionKey)
-            } catch {
-                throw URLArchiveError.encryptionKey(error)
-            }
-
-            let decryptionStream = try ArchiveByteStream.decryptionStream(
+            destinationStream = try Self.archiveDecryptionStream(
                 readingFrom: readFileStream,
-                encryptionContext: context
+                encryptionKey: encryptionKey
             )
-            .require(URLArchiveError.encryptionStreamInit)
-
-            destinationStream = decryptionStream
         } else {
             let decompressStream = try ArchiveByteStream.decompressionStream(
                 readingFrom: readFileStream
@@ -212,24 +185,11 @@ extension URL {
         let destinationStream: ArchiveByteStream
 
         if let encryptionKey {
-            let context = ArchiveEncryptionContext(
-                profile: .hkdf_sha256_aesctr_hmac__symmetric__none,
-                compressionAlgorithm: algorithm
-            )
-
-            do {
-                try context.setSymmetricKey(encryptionKey)
-            } catch {
-                throw URLArchiveError.encryptionKey(error)
-            }
-
-            let encryptionStream = try ArchiveByteStream.encryptionStream(
+            destinationStream = try Self.archiveEncryptionStream(
                 writingTo: writeFileStream,
-                encryptionContext: context
+                encryptionKey: encryptionKey,
+                algorithm: algorithm
             )
-            .require(URLArchiveError.encryptionStreamInit)
-
-            destinationStream = encryptionStream
         } else {
             let compressStream = try ArchiveByteStream.compressionStream(
                 using: algorithm,
@@ -285,24 +245,10 @@ extension URL {
         let destinationStream: ArchiveByteStream
 
         if let encryptionKey {
-            let context = try ArchiveEncryptionContext(
-                from: readFileStream
-            )
-            .require(URLArchiveError.encryptionStreamInit)
-
-            do {
-                try context.setSymmetricKey(encryptionKey)
-            } catch {
-                throw URLArchiveError.encryptionKey(error)
-            }
-
-            let decryptionStream = try ArchiveByteStream.decryptionStream(
+            destinationStream = try Self.archiveDecryptionStream(
                 readingFrom: readFileStream,
-                encryptionContext: context
+                encryptionKey: encryptionKey
             )
-            .require(URLArchiveError.encryptionStreamInit)
-
-            destinationStream = decryptionStream
         } else {
             let decompressStream = try ArchiveByteStream.decompressionStream(
                 readingFrom: readFileStream
@@ -342,4 +288,50 @@ extension URL {
         }
     }
 
+}
+
+// MARK: - Encryption Helpers
+
+private extension URL {
+    static func archiveEncryptionStream(writingTo writeStream: ArchiveByteStream, encryptionKey: SymmetricKey, algorithm: ArchiveCompression) throws(URLArchiveError) -> ArchiveByteStream {
+        let context = ArchiveEncryptionContext(
+            profile: .hkdf_sha256_aesctr_hmac__symmetric__none,
+            compressionAlgorithm: algorithm
+        )
+
+        do {
+            try context.setSymmetricKey(encryptionKey)
+        } catch {
+            throw URLArchiveError.encryptionKey(error)
+        }
+
+        let stream = try ArchiveByteStream.encryptionStream(
+            writingTo: writeStream,
+            encryptionContext: context
+        )
+        .require(URLArchiveError.encryptionStreamInit)
+
+        return stream
+    }
+
+    static func archiveDecryptionStream(readingFrom readStream: ArchiveByteStream, encryptionKey: SymmetricKey) throws(URLArchiveError) -> ArchiveByteStream {
+        let context = try ArchiveEncryptionContext(
+            from: readStream
+        )
+        .require(URLArchiveError.encryptionStreamInit)
+
+        do {
+            try context.setSymmetricKey(encryptionKey)
+        } catch {
+            throw URLArchiveError.encryptionKey(error)
+        }
+
+        let stream = try ArchiveByteStream.decryptionStream(
+            readingFrom: readStream,
+            encryptionContext: context
+        )
+        .require(URLArchiveError.encryptionStreamInit)
+
+        return stream
+    }
 }
