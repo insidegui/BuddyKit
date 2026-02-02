@@ -63,10 +63,6 @@ public extension URL {
         }
     }
 
-}
-
-extension URL {
-
     func compressFile(to outputURL: URL, using algorithm: ArchiveCompression, encryptionKey: SymmetricKey? = nil) throws(URLArchiveError) {
         let sourceFilePath = System.FilePath(self.path)
 
