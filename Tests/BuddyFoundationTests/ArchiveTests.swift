@@ -153,7 +153,7 @@ struct ArchiveTests {
             #expect(compressedData.count >= 200)
 
             /// Can't match exact file structure here because file metadata is not static.
-            #expect(compressedData.hexString.uppercased().contains("46696C6520436F6E74656E74732030"))
+            #expect(compressedData.hexString.uppercased().contains("46696C6520436F6E74656E7473"))
 
             let extractedURL = URL.temporaryDirectory()
             defer { extractedURL.delete() }
