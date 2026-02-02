@@ -234,4 +234,20 @@ struct ArchiveTests {
             #expect(try String(contentsOf: url2, encoding: .utf8) == "File Contents 2")
         }
     }
+
+    @Test func testDecryptData() throws {
+        try withTemporaryFile(contents: "Hello, Encryption!") { fileURL in
+            let encryptedURL = URL.temporaryFile(extension: "aea")
+            defer { encryptedURL.delete() }
+
+            try fileURL.compress(to: encryptedURL, encryptionKey: .test)
+            print(encryptedURL.path(percentEncoded: false))
+
+            let encryptedData = try Data(contentsOf: encryptedURL, options: .mappedIfSafe)
+
+            let decryptedData = try encryptedData.extractArchive(encryptionKey: .test)
+
+            #expect(String(decoding: decryptedData, as: UTF8.self) == "Hello, Encryption!")
+        }
+    }
 }
