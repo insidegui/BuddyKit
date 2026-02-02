@@ -46,8 +46,7 @@ public extension Data {
                         var data = Data.init(repeating: 0, count: Int(count))
 
                         try data.withUnsafeMutableBytes { buffer in
-                            let count = try outputStream.read(into: buffer)
-                            print(count)
+                            _ = try outputStream.read(into: buffer)
                         }
 
                         return data
