@@ -202,4 +202,36 @@ struct ArchiveTests {
             #expect(decryptedString == "Hello, Encryption!")
         }
     }
+
+    @Test func testEncryptDecryptDirectory() throws {
+        try withTemporaryDirectory(fileContents: "File Contents 0", "File Contents 1", "File Contents 2") { directoryURL in
+            let encryptedURL = URL.temporaryFile(extension: "aea")
+            defer { encryptedURL.delete() }
+
+            try directoryURL.compress(to: encryptedURL, encryptionKey: .test)
+
+            let encryptedData = try Data(contentsOf: encryptedURL)
+
+            /// Can't match exact size here.
+            #expect(encryptedData.count >= 200)
+
+            /// Ensure encrypted archive doesn't contain file data in plain text.
+            #expect(!encryptedData.hexString.uppercased().contains("46696C6520436F6E74656E74732030"))
+
+            let extractedURL = URL.temporaryDirectory()
+            defer { extractedURL.delete() }
+
+            try encryptedURL.extractDirectory(to: extractedURL, encryptionKey: .test)
+
+            /// A new directory with the name of the input directory will be created in the extracted directory.
+            let extractedDirURL = extractedURL.appending(path: directoryURL.lastPathComponent, directoryHint: .isDirectory)
+            let url0 = extractedDirURL.appending(path: "0")
+            let url1 = extractedDirURL.appending(path: "1")
+            let url2 = extractedDirURL.appending(path: "2")
+
+            #expect(try String(contentsOf: url0, encoding: .utf8) == "File Contents 0")
+            #expect(try String(contentsOf: url1, encoding: .utf8) == "File Contents 1")
+            #expect(try String(contentsOf: url2, encoding: .utf8) == "File Contents 2")
+        }
+    }
 }

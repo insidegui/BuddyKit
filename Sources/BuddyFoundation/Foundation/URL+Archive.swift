@@ -90,40 +90,39 @@ extension URL {
         .require(URLArchiveError.writeStreamInit)
         defer { try? writeFileStream.close() }
 
-        do {
-            let destinationStream: ArchiveByteStream
+        let destinationStream: ArchiveByteStream
 
-            if let encryptionKey {
-                let context = ArchiveEncryptionContext(
-                    profile: .hkdf_sha256_aesctr_hmac__symmetric__none,
-                    compressionAlgorithm: algorithm
-                )
+        if let encryptionKey {
+            let context = ArchiveEncryptionContext(
+                profile: .hkdf_sha256_aesctr_hmac__symmetric__none,
+                compressionAlgorithm: algorithm
+            )
 
-                do {
-                    try context.setSymmetricKey(encryptionKey)
-                } catch {
-                    throw URLArchiveError.encryptionKey(error)
-                }
-
-                let encryptionStream = try ArchiveByteStream.encryptionStream(
-                    writingTo: writeFileStream,
-                    encryptionContext: context
-                )
-                .require(URLArchiveError.encryptionStreamInit)
-
-                destinationStream = encryptionStream
-            } else {
-                let compressStream = try ArchiveByteStream.compressionStream(
-                    using: algorithm,
-                    writingTo: writeFileStream
-                )
-                .require(URLArchiveError.compressionStreamInit)
-
-                destinationStream = compressStream
+            do {
+                try context.setSymmetricKey(encryptionKey)
+            } catch {
+                throw URLArchiveError.encryptionKey(error)
             }
 
-            defer { try? destinationStream.close() }
+            let encryptionStream = try ArchiveByteStream.encryptionStream(
+                writingTo: writeFileStream,
+                encryptionContext: context
+            )
+            .require(URLArchiveError.encryptionStreamInit)
 
+            destinationStream = encryptionStream
+        } else {
+            let compressStream = try ArchiveByteStream.compressionStream(
+                using: algorithm,
+                writingTo: writeFileStream
+            )
+            .require(URLArchiveError.compressionStreamInit)
+
+            destinationStream = compressStream
+        }
+        defer { try? destinationStream.close() }
+
+        do {
             _ = try ArchiveByteStream.process(
                 readingFrom: readFileStream,
                 writingTo: destinationStream
@@ -157,38 +156,38 @@ extension URL {
         .require(URLArchiveError.writeStreamInit)
         defer { try? writeFileStream.close() }
 
-        do {
-            let destinationStream: ArchiveByteStream
+        let destinationStream: ArchiveByteStream
 
-            if let encryptionKey {
-                let context = try ArchiveEncryptionContext(
-                    from: readFileStream
-                )
-                .require(URLArchiveError.encryptionStreamInit)
+        if let encryptionKey {
+            let context = try ArchiveEncryptionContext(
+                from: readFileStream
+            )
+            .require(URLArchiveError.encryptionStreamInit)
 
-                do {
-                    try context.setSymmetricKey(encryptionKey)
-                } catch {
-                    throw URLArchiveError.encryptionKey(error)
-                }
-
-                let decryptionStream = try ArchiveByteStream.decryptionStream(
-                    readingFrom: readFileStream,
-                    encryptionContext: context
-                )
-                .require(URLArchiveError.encryptionStreamInit)
-
-                destinationStream = decryptionStream
-            } else {
-                let decompressStream = try ArchiveByteStream.decompressionStream(
-                    readingFrom: readFileStream
-                )
-                .require(URLArchiveError.compressionStreamInit)
-
-                destinationStream = decompressStream
+            do {
+                try context.setSymmetricKey(encryptionKey)
+            } catch {
+                throw URLArchiveError.encryptionKey(error)
             }
-            defer { try? destinationStream.close() }
 
+            let decryptionStream = try ArchiveByteStream.decryptionStream(
+                readingFrom: readFileStream,
+                encryptionContext: context
+            )
+            .require(URLArchiveError.encryptionStreamInit)
+
+            destinationStream = decryptionStream
+        } else {
+            let decompressStream = try ArchiveByteStream.decompressionStream(
+                readingFrom: readFileStream
+            )
+            .require(URLArchiveError.compressionStreamInit)
+
+            destinationStream = decompressStream
+        }
+        defer { try? destinationStream.close() }
+
+        do {
             _ = try ArchiveByteStream.process(
                 readingFrom: destinationStream,
                 writingTo: writeFileStream
@@ -199,7 +198,6 @@ extension URL {
     }
 
     func compressDirectory(to outputURL: URL, using algorithm: ArchiveCompression, encryptionKey: SymmetricKey? = nil) throws(URLArchiveError) {
-        #warning("TODO: Implement encryption")
         let archiveFilePath = System.FilePath(outputURL.path)
 
         let writeFileStream = try ArchiveByteStream.fileStream(
@@ -211,15 +209,41 @@ extension URL {
         .require(URLArchiveError.writeStreamInit)
         defer { try? writeFileStream.close() }
 
-        let compressStream = try ArchiveByteStream.compressionStream(
-            using: algorithm,
-            writingTo: writeFileStream
-        )
-        .require(URLArchiveError.compressionStreamInit)
-        defer { try? compressStream.close() }
+        let destinationStream: ArchiveByteStream
+
+        if let encryptionKey {
+            let context = ArchiveEncryptionContext(
+                profile: .hkdf_sha256_aesctr_hmac__symmetric__none,
+                compressionAlgorithm: algorithm
+            )
+
+            do {
+                try context.setSymmetricKey(encryptionKey)
+            } catch {
+                throw URLArchiveError.encryptionKey(error)
+            }
+
+            let encryptionStream = try ArchiveByteStream.encryptionStream(
+                writingTo: writeFileStream,
+                encryptionContext: context
+            )
+            .require(URLArchiveError.encryptionStreamInit)
+
+            destinationStream = encryptionStream
+        } else {
+            let compressStream = try ArchiveByteStream.compressionStream(
+                using: algorithm,
+                writingTo: writeFileStream
+            )
+            .require(URLArchiveError.compressionStreamInit)
+
+            destinationStream = compressStream
+        }
+
+        defer { try? destinationStream.close() }
 
         let encodeStream = try ArchiveStream.encodeStream(
-            writingTo: compressStream
+            writingTo: destinationStream
         )
         .require(URLArchiveError.encodeStreamInit)
         defer { try? encodeStream.close() }
@@ -247,7 +271,6 @@ extension URL {
     }
 
     func extractDirectory(to outputURL: URL, encryptionKey: SymmetricKey? = nil) throws {
-        #warning("TODO: Implement encryption")
         let archiveFilePath = System.FilePath(self.path)
 
         let readFileStream = try ArchiveByteStream.fileStream(
@@ -259,14 +282,39 @@ extension URL {
         .require(URLArchiveError.readStreamInit)
         defer { try? readFileStream.close() }
 
-        let decompressStream = try ArchiveByteStream.decompressionStream(
-            readingFrom: readFileStream
-        )
-        .require(URLArchiveError.compressionStreamInit)
-        defer { try? decompressStream.close() }
+        let destinationStream: ArchiveByteStream
+
+        if let encryptionKey {
+            let context = try ArchiveEncryptionContext(
+                from: readFileStream
+            )
+            .require(URLArchiveError.encryptionStreamInit)
+
+            do {
+                try context.setSymmetricKey(encryptionKey)
+            } catch {
+                throw URLArchiveError.encryptionKey(error)
+            }
+
+            let decryptionStream = try ArchiveByteStream.decryptionStream(
+                readingFrom: readFileStream,
+                encryptionContext: context
+            )
+            .require(URLArchiveError.encryptionStreamInit)
+
+            destinationStream = decryptionStream
+        } else {
+            let decompressStream = try ArchiveByteStream.decompressionStream(
+                readingFrom: readFileStream
+            )
+            .require(URLArchiveError.compressionStreamInit)
+
+            destinationStream = decompressStream
+        }
+        defer { try? destinationStream.close() }
 
         let decodeStream = try ArchiveStream.decodeStream(
-            readingFrom: decompressStream
+            readingFrom: destinationStream
         )
         .require(URLArchiveError.encodeStreamInit)
         defer { try? decodeStream.close() }
@@ -286,7 +334,6 @@ extension URL {
             flags: [.ignoreOperationNotPermitted]
         )
         .require(URLArchiveError.extractStreamInit)
-        defer { try? extractStream.close() }
 
         do {
             _ = try ArchiveStream.process(readingFrom: decodeStream, writingTo: extractStream)
