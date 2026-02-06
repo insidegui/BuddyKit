@@ -3,8 +3,10 @@ import AppleArchive
 import System
 import CryptoKit
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 public typealias URLArchiveError = ArchiveError
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 public extension URL {
 
     func compress(to outputURL: URL, using algorithm: ArchiveCompression = .lzfse, encryptionKey: SymmetricKey? = nil) throws(URLArchiveError) {

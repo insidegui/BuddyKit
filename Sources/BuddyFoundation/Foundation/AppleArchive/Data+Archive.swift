@@ -3,6 +3,7 @@ import AppleArchive
 import System
 import CryptoKit
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 public extension Data {
     func extractArchive(encryptionKey: SymmetricKey? = nil) throws(URLArchiveError) -> Data {
         do {

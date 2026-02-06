@@ -2,6 +2,7 @@ import Foundation
 import AppleArchive
 import CryptoKit
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 extension ArchiveByteStream {
     static func encryptionStream(writingTo writeStream: ArchiveByteStream, encryptionKey: SymmetricKey, algorithm: ArchiveCompression) throws(URLArchiveError) -> ArchiveByteStream {
         let context = ArchiveEncryptionContext(

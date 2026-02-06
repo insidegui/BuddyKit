@@ -5,7 +5,7 @@ import CryptoKit
  This extension adds support for different ways of representing a symmetric key that are supported by Apple Encrypted Archive and the `aea` command-line tool.
  */
 
-@available(macOS 13.0, *)
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 extension SymmetricKey: @retroactive ExpressibleByStringLiteral {
     private static let hexPrefix = "hex:"
     private static let base64Prefix = "base64:"
