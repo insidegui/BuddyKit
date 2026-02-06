@@ -3,10 +3,12 @@ import Testing
 @testable import BuddyFoundation
 import CryptoKit
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 private extension SymmetricKey {
     static let test = SymmetricKey(data: try! Data(hexString: "d60877530c85849f5570068d0159ce91b936942d270d88f8343c4fcccc957225"))
 }
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 private extension URL {
     static func temporaryFile(extension: String? = nil) -> URL {
         let url = FileManager.default.temporaryDirectory
@@ -29,6 +31,7 @@ private extension URL {
     }
 }
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 private func withTemporaryFile<T>(contents: String, perform block: (_ fileURL: URL) throws -> T) rethrows -> T {
     let fileURL = URL.temporaryFile()
     defer { fileURL.delete() }
@@ -37,6 +40,7 @@ private func withTemporaryFile<T>(contents: String, perform block: (_ fileURL: U
     return try block(fileURL)
 }
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 private func withTemporaryDirectory<T>(fileContents: String..., perform block: (_ directoryURL: URL) throws -> T) rethrows -> T {
     let directoryURL = URL.temporaryDirectory()
     defer { directoryURL.delete() }
@@ -52,39 +56,46 @@ private func withTemporaryDirectory<T>(fileContents: String..., perform block: (
 
 @Suite
 struct ArchiveTests {
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromHexStringLiteral() throws {
         let decodedKey: SymmetricKey = "hex:d60877530c85849f5570068d0159ce91b936942d270d88f8343c4fcccc957225"
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromHexString() throws {
         let decodedKey = try SymmetricKey(appleEncryptedArchiveCompatible: "hex:d60877530c85849f5570068d0159ce91b936942d270d88f8343c4fcccc957225")
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromBase64String() throws {
         let decodedKey = try SymmetricKey(appleEncryptedArchiveCompatible: "base64:1gh3UwyFhJ9VcAaNAVnOkbk2lC0nDYj4NDxPzMyVciU=")
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromHexStringWrappedInData() throws {
         let data = Data("hex:d60877530c85849f5570068d0159ce91b936942d270d88f8343c4fcccc957225".utf8)
         let decodedKey = try SymmetricKey(appleEncryptedArchiveCompatible: data)
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromBase64StringWrappedInData() throws {
         let data = Data("base64:1gh3UwyFhJ9VcAaNAVnOkbk2lC0nDYj4NDxPzMyVciU=".utf8)
         let decodedKey = try SymmetricKey(appleEncryptedArchiveCompatible: data)
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromRawData() throws {
         let data: Data = "d60877530c85849f5570068d0159ce91b936942d270d88f8343c4fcccc957225"
         let decodedKey = try SymmetricKey(appleEncryptedArchiveCompatible: data)
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromRawDataFile() throws {
         let fileURL = URL.temporaryFile()
         defer { fileURL.delete() }
@@ -96,6 +107,7 @@ struct ArchiveTests {
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromHexStringFile() throws {
         let fileURL = URL.temporaryFile()
         defer { fileURL.delete() }
@@ -107,6 +119,7 @@ struct ArchiveTests {
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testSymmetricKeyFromBase64StringFile() throws {
         let fileURL = URL.temporaryFile()
         defer { fileURL.delete() }
@@ -118,6 +131,7 @@ struct ArchiveTests {
         #expect(decodedKey == SymmetricKey.test)
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testCompressDecompressSingleFile() throws {
         try withTemporaryFile(contents: "Hello, Compression!") { fileURL in
             let compressedURL = URL.temporaryFile(extension: "aar")
@@ -140,6 +154,7 @@ struct ArchiveTests {
         }
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testCompressDecompressDirectory() throws {
         try withTemporaryDirectory(fileContents: "File Contents 0", "File Contents 1", "File Contents 2") { directoryURL in
             let compressedURL = URL.temporaryFile(extension: "aar")
@@ -172,6 +187,7 @@ struct ArchiveTests {
         }
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testEncryptDecryptSingleFile() throws {
         try withTemporaryFile(contents: "Hello, Encryption!") { fileURL in
             let encryptedURL = URL.temporaryFile(extension: "aea")
@@ -203,6 +219,7 @@ struct ArchiveTests {
         }
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testEncryptDecryptDirectory() throws {
         try withTemporaryDirectory(fileContents: "File Contents 0", "File Contents 1", "File Contents 2") { directoryURL in
             let encryptedURL = URL.temporaryFile(extension: "aea")
@@ -235,6 +252,7 @@ struct ArchiveTests {
         }
     }
 
+    @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
     @Test func testDecryptData() throws {
         try withTemporaryFile(contents: "Hello, Encryption!") { fileURL in
             let encryptedURL = URL.temporaryFile(extension: "aea")

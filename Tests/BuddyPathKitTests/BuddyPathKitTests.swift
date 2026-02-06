@@ -69,12 +69,14 @@ final class BuddyPathKitTests: XCTestCase {
         XCTAssertTrue(path.isRelative)
     }
 
+    #if !targetEnvironment(simulator)
     func testTildePath() {
         let path = FilePath("~")
         XCTAssertEqual(path.absolute(), FilePath("/Users/") + NSUserName())
         XCTAssertFalse(path.isAbsolute)
         XCTAssertTrue(path.isRelative)
     }
+    #endif
 
     func testAbsolutePath() {
         let path = FilePath("/usr/bin/swift")

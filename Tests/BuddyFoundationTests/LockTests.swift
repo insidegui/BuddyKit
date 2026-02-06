@@ -5,6 +5,7 @@ import Testing
 @Suite("Lock Tests")
 struct LockTests {
     /// No expectations here other than it shouldn't crash.
+    @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 10.0, *)
     @Test func testConcurrentReadWriteProtected() async {
         let container = TestContainer()
 
@@ -31,6 +32,7 @@ struct LockTests {
     }
 }
 
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 10.0, *)
 private final class TestContainer: @unchecked Sendable {
     @Lock var value: Set<Int> = []
     @Lock var value2: Set<Int> = []
