@@ -67,7 +67,7 @@ public extension Decodable {
 }
 
 @available(macOS 14, iOS 17, tvOS 17, watchOS 10, *)
-extension Encodable {
+public extension Encodable {
     /// Encodes the value to a JSON file.
     /// - Parameters:
     ///   - file: Path to JSON file.
@@ -88,7 +88,7 @@ extension Encodable {
 }
 
 @available(macOS 14, iOS 17, tvOS 17, watchOS 10, *)
-extension FilePath {
+public extension FilePath {
     /// Decodes a `Decodable` type from a JSON file.
     /// - Parameter decoder: A custom `JSONDecoder` to use.
     /// - Returns: The value decoded from the file.
