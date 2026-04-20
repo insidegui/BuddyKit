@@ -72,6 +72,11 @@ public extension FilePath {
     func appendingExtension(for type: UTType?) -> Self {
         type?.preferredFilenameExtension.flatMap { appendingExtension($0) } ?? self
     }
+
+    /// Returns the path after resolving any symlinks, including those in intermediary paths.
+    func resolvingSymlinks() -> Self {
+        FilePath(url.resolvingSymlinksInPath())
+    }
 }
 
 
